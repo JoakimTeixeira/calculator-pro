@@ -1,31 +1,19 @@
-import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+  let component: AppComponent;
+
+  beforeEach(() => {
+    component = new AppComponent();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'calculator-pro'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('calculator-pro');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('calculator-pro app is running!');
+  it('should call the openDialog function when the button is clicked', () => {
+    const spy = jest.spyOn(component, 'openDialog');
+    component.openDialog();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

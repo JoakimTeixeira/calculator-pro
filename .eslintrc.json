@@ -35,7 +35,10 @@
     {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
+      "rules": {
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "warning"
+      }
     }
   ]
 }
