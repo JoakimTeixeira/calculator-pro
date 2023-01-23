@@ -1,6 +1,7 @@
-<form [formGroup]="formGroup">
-  <mat-form-field>
+<form class="form" [formGroup]="formGroup">
+  <mat-form-field class="form-field">
     <input
+      class="input"
       type="number"
       matInput
       name="a"
@@ -9,39 +10,47 @@
       min="1"
       (blur)="handleErrors('a')" />
 
-    <mat-error *ngIf="formGroup.errors?.a?.isRequired"
+    <mat-error class="error" *ngIf="formGroup.errors?.a?.isRequired"
       >This field is required</mat-error
     >
-    <mat-error *ngIf="formGroup.errors?.a?.isNotMin"
+    <mat-error class="error" *ngIf="formGroup.errors?.a?.isNotMin"
       >Must be greater than 0</mat-error
     >
   </mat-form-field>
-  <mat-form-field>
+  <p class="operator">+</p>
+  <mat-form-field class="form-field">
     <input
+      class="input"
       type="number"
       matInput
       name="b"
       placeholder="Input B"
       formControlName="b"
       min="1" />
-    <mat-error *ngIf="formGroup.errors?.b?.isNotMin"
+    <mat-error class="error" *ngIf="formGroup.errors?.b?.isNotMin"
       >Must be greater than 0</mat-error
     >
   </mat-form-field>
-  <mat-form-field>
+  <p class="operator">÷</p>
+  <mat-form-field class="form-field">
     <input
+      class="input"
       type="number"
       matInput
       name="c"
       placeholder="Input C"
       formControlName="c"
       min="1" />
-    <mat-error *ngIf="formGroup.errors?.c?.isNotMin"
+    <mat-error class="error" *ngIf="formGroup.errors?.c?.isNotMin"
       >Must be greater than 0</mat-error
     >
   </mat-form-field>
   <div>
-    <button mat-raised-button (click)="save()">Save</button>
-    <button mat-raised-button (click)="close()">Close</button>
+    <button class="custom-button" mat-raised-button (click)="save()">
+      Save
+    </button>
+    <button class="custom-button" mat-raised-button (click)="close()">
+      Close
+    </button>
   </div>
 </form>
