@@ -1,0 +1,40 @@
+<form [formGroup]="formGroup">
+  <mat-form-field>
+    <input
+      type="number"
+      matInput
+      name="a"
+      placeholder="Input A"
+      formControlName="a"
+      min="1" />
+
+    <mat-error *ngIf="formGroup.errors?.isRequired"
+      >This field is required</mat-error
+    >
+    <mat-error>Must be greater than 0</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      type="number"
+      matInput
+      name="b"
+      placeholder="Input B"
+      formControlName="b"
+      min="1" />
+    <mat-error>Must be greater than 0</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      type="number"
+      matInput
+      name="c"
+      placeholder="Input C"
+      formControlName="c"
+      min="1" />
+    <mat-error>Must be greater than 0</mat-error>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button (click)="save()">Save</button>
+    <button mat-raised-button (click)="close()">Close</button>
+  </div>
+</form>
