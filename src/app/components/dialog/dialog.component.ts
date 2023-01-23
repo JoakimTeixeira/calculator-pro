@@ -19,10 +19,8 @@ interface InputValues {
 }
 
 interface InputErrors {
-  [key: string]: {
-    isRequired?: boolean;
-    isNotMin?: boolean;
-  };
+  isRequired?: boolean;
+  isNotMin?: boolean;
 }
 
 @Component({
@@ -61,10 +59,8 @@ export class DialogComponent implements OnInit {
     });
 
     this.formGroup.statusChanges.subscribe(status => {
-      if (status === 'INVALID') {
-        if (!this.formGroup.errors) {
-          this.handleStatusErrors();
-        }
+      if (status === 'INVALID' && !this.formGroup.errors) {
+        this.handleStatusErrors();
       }
     });
   }
@@ -143,36 +139,22 @@ export class DialogComponent implements OnInit {
   }
 
   public handleStatusErrors(): void {
-    for (const field in this.formGroup.controls) {
-      this.handleErrors(field);
-    }
+    Object.keys(this.formGroup.controls)
+      .filter(field => this.formGroup.controls[field].invalid)
+      .forEach(field => this.handleErrors(field));
   }
 
   public handleErrors(field: string): void {
     const input = this.formGroup.get(field);
-    let errors: InputErrors = this.formGroup.errors || {};
+    const currentErrors = this.formGroup.errors;
+    const fieldErrors: InputErrors = {
+      isRequired: input?.hasError('required') || false,
+      isNotMin: input?.hasError('min') || false,
+    };
 
-    if (input?.hasError('required')) {
-      errors = {
-        ...errors,
-        [field]: {
-          ...errors[field],
-          isRequired: true,
-        },
-      };
+    if (Object.values(fieldErrors).some(Boolean)) {
+      this.formGroup.setErrors({ ...currentErrors, [field]: fieldErrors });
     }
-
-    if (input?.hasError('min')) {
-      errors = {
-        ...errors,
-        [field]: {
-          ...errors[field],
-          isNotMin: true,
-        },
-      };
-    }
-
-    this.formGroup.setErrors(errors);
   }
 
   public close(): void {
