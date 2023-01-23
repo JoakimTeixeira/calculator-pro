@@ -6,12 +6,15 @@
       name="a"
       placeholder="Input A"
       formControlName="a"
-      min="1" />
+      min="1"
+      (blur)="handleErrors('a')" />
 
-    <mat-error *ngIf="formGroup.errors?.isRequired"
+    <mat-error *ngIf="formGroup.errors?.a?.isRequired"
       >This field is required</mat-error
     >
-    <mat-error>Must be greater than 0</mat-error>
+    <mat-error *ngIf="formGroup.errors?.a?.isNotMin"
+      >Must be greater than 0</mat-error
+    >
   </mat-form-field>
   <mat-form-field>
     <input
@@ -21,7 +24,9 @@
       placeholder="Input B"
       formControlName="b"
       min="1" />
-    <mat-error>Must be greater than 0</mat-error>
+    <mat-error *ngIf="formGroup.errors?.b?.isNotMin"
+      >Must be greater than 0</mat-error
+    >
   </mat-form-field>
   <mat-form-field>
     <input
@@ -31,7 +36,9 @@
       placeholder="Input C"
       formControlName="c"
       min="1" />
-    <mat-error>Must be greater than 0</mat-error>
+    <mat-error *ngIf="formGroup.errors?.c?.isNotMin"
+      >Must be greater than 0</mat-error
+    >
   </mat-form-field>
   <div>
     <button mat-raised-button (click)="save()">Save</button>

@@ -18,6 +18,13 @@ interface InputValues {
   c: number | null;
 }
 
+interface InputErrors {
+  [key: string]: {
+    isRequired?: boolean;
+    isNotMin?: boolean;
+  };
+}
+
 @Component({
   selector: 'DialogComponent',
   templateUrl: './dialog.component.html',
@@ -55,11 +62,8 @@ export class DialogComponent implements OnInit {
 
     this.formGroup.statusChanges.subscribe(status => {
       if (status === 'INVALID') {
-        if (
-          this.formGroup.get('a')?.hasError('required') &&
-          !this.formGroup.errors?.isRequired
-        ) {
-          this.formGroup.setErrors({ isRequired: true });
+        if (!this.formGroup.errors) {
+          this.handleStatusErrors();
         }
       }
     });
@@ -95,10 +99,6 @@ export class DialogComponent implements OnInit {
           throw new Error('Value is not a number');
         }
 
-        if (this.formGroup.get('a')?.hasError('required')) {
-          throw new Error('is required');
-        }
-
         const modifiedInput = {
           a: a ? Number(a) : 0,
           b: b ? Number(b) : 0,
@@ -106,6 +106,7 @@ export class DialogComponent implements OnInit {
         };
 
         if (
+          c &&
           (modifiedInput.a + modifiedInput.b) % modifiedInput.c === 0 &&
           (modifiedInput.a + modifiedInput.b) / modifiedInput.c <= 1
         ) {
@@ -139,6 +140,39 @@ export class DialogComponent implements OnInit {
 
   public openSnackBar(message: string): void {
     this.snackBar.open(message, 'Dismiss', { duration: 2000 });
+  }
+
+  public handleStatusErrors(): void {
+    for (const field in this.formGroup.controls) {
+      this.handleErrors(field);
+    }
+  }
+
+  public handleErrors(field: string): void {
+    const input = this.formGroup.get(field);
+    let errors: InputErrors = this.formGroup.errors || {};
+
+    if (input?.hasError('required')) {
+      errors = {
+        ...errors,
+        [field]: {
+          ...errors[field],
+          isRequired: true,
+        },
+      };
+    }
+
+    if (input?.hasError('min')) {
+      errors = {
+        ...errors,
+        [field]: {
+          ...errors[field],
+          isNotMin: true,
+        },
+      };
+    }
+
+    this.formGroup.setErrors(errors);
   }
 
   public close(): void {
